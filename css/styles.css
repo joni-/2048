@@ -1,0 +1,14 @@
+#grid {
+    width: 144px;
+}
+
+.grid-cell {
+    margin: 5px;
+    width: 33px;
+    height: 33px;
+    float: left;
+    background-color: #B4D8CF;
+    border: 1px;
+    border-style: solid;
+    text-align: center;
+}
