@@ -47,13 +47,17 @@ var Game = (function() {
         $("body").on('keyup', function(e) {
             var key = e.keyCode;
             if (key === Keys.UP) {
-                Game.Control.moveUp(state);
+                state = Game.Control.moveUp(state);
+                redraw();
             } else if (key === Keys.DOWN) {
-                console.log('Move down');
+                state = Game.Control.moveDown(state);
+                redraw();
             } else if (key === Keys.LEFT) {
-                console.log('Move left');
+                state = Game.Control.moveLeft(state);
+                redraw();
             } else if (key === Keys.RIGHT) {
-                console.log('Move right');
+                state = Game.Control.moveRight(state);
+                redraw();
             }
         });
     }
