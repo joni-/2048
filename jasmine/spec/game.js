@@ -1,59 +1,48 @@
 describe("Simple merges", function() {
     describe("Moving up", function() {
-        it("combines tiles in first column", function() {
-            var initialState = [
-                2, 0, 0,
-                2, 0, 0,
-                0, 0, 0
-            ];
-
-            var newState = Game.Control.moveUp(initialState);
-
-            var expectedState = [
-                4, 0, 0,
+        it("should combine cells correctly", function() {
+            expect(Game.Control.moveUp([
+                0, 0, 0,
                 0, 0, 0,
                 0, 0, 0
-            ];
-
-            expect(newState).toEqual(expectedState);
-        });
-
-        it("combines tiles in second column", function() {
-            var initialState = [
-                0, 2, 0,
-                0, 2, 0,
-                0, 0, 0
-            ];
-
-            var newState = Game.Control.moveUp(initialState);
-
-            var expectedState = [
-                0, 4, 0,
+            ])).toEqual([
+                0, 0, 0,
                 0, 0, 0,
                 0, 0, 0
-            ];
+            ]);
 
-            expect(newState).toEqual(expectedState);
-        });
-
-        it("combines tiles in third column", function() {
-            var initialState = [
-                0, 0, 2,
-                0, 0, 2,
+            expect(Game.Control.moveUp([
+                1, 1, 1,
+                1, 1, 1,
+                1, 1, 1
+            ])).toEqual([
+                2, 2, 2,
+                1, 1, 1,
                 0, 0, 0
-            ];
+            ]);
 
-            var newState = Game.Control.moveUp(initialState);
+            expect(Game.Control.moveUp([
+                4, 0, 1,
+                2, 1, 1,
+                1, 0, 1
+            ])).toEqual([
+                4, 1, 2,
+                2, 0, 1,
+                1, 0, 0
+            ]);
 
-            var expectedState = [
-                0, 0, 4,
-                0, 0, 0,
-                0, 0, 0
-            ];
-
-            expect(newState).toEqual(expectedState);
+            expect(Game.Control.moveUp([
+                1, 0, 0, 4,
+                1, 1, 0, 3,
+                1, 0, 0, 1,
+                1, 1, 1, 2
+            ])).toEqual([
+                2, 2, 1, 4,
+                2, 0, 0, 3,
+                0, 0, 0, 1,
+                0, 0, 0, 2
+            ]);
         });
-
     });
 });
 

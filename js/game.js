@@ -74,21 +74,36 @@ Game.Control = (function() {
     var EMPTY_CELL = 0;
 
     function moveUp(state) {
-        var newState = state.slice();
-        var gridSize = Math.sqrt(newState.length);
-
-        for (var column = 0; column < gridSize; column++) {
-            for (var index = column + gridSize; index < newState.length; index++) {
-                var start = index - gridSize;
-                if (newState[start] === newState[index]) {
-                    newState[start] = newState[start] * 2;
-                    newState[index] = 0;
-                    break;
-                }
-            }        
+        var columns = parseColumns(state);
+        for (var i = 0; i < columns.length; i++) {
+            columns[i] = mergeLine(columns[i]);
         }
+        return setColumns(columns);
+    }
 
-        return newState;
+    function parseColumns(grid) {
+        var columns = [];
+        for (var column = 0; column < Math.sqrt(grid.length); column++) {
+            var columnItems = [];
+            for (var row = 0; row < Math.sqrt(grid.length); row++) {
+                var index = (row * Math.sqrt(grid.length)) + column;
+                columnItems.push(grid[index]);
+            }
+            columns.push(columnItems.reverse());
+        }
+        return columns;
+    }
+
+    function setColumns(columns) {
+        var grid = [];
+        for (var column = 0; column < columns.length; column++) {
+            var columnItems = columns[column].reverse();
+            for (var row = 0; row < columnItems.length; row++) {
+                var gridIndex = (row * columns.length) + column;
+                grid[gridIndex] = columnItems[row];
+            }
+        }
+        return grid;
     }
 
     function mergeLine(state) {
