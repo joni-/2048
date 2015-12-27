@@ -90,6 +90,52 @@ describe("Simple merges", function() {
             ]);
         });
     });
+
+    describe("Moving left", function() {
+        it("should combine cells correctly", function() {
+            expect(Game.Control.moveLeft([
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0
+            ])).toEqual([
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0
+            ]);
+
+            expect(Game.Control.moveLeft([
+                1, 1, 1,
+                1, 1, 1,
+                1, 1, 1
+            ])).toEqual([
+                2, 1, 0,
+                2, 1, 0,
+                2, 1, 0
+            ]);
+
+            expect(Game.Control.moveLeft([
+                1, 1, 1,
+                1, 1, 1,
+                1, 1, 1
+            ])).toEqual([
+                2, 1, 0,
+                2, 1, 0,
+                2, 1, 0
+            ]);
+
+            expect(Game.Control.moveLeft([
+                1, 1, 1, 1,
+                1, 1, 0, 1,
+                0, 0, 0, 1,
+                4, 3, 1, 2
+            ])).toEqual([
+                2, 2, 0, 0,
+                2, 1, 0, 0,
+                1, 0, 0, 0,
+                4, 3, 1, 2
+            ]);
+        });
+    });
 });
 
 

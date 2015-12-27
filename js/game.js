@@ -89,6 +89,39 @@ Game.Control = (function() {
         return setColumnsDown(columns);
     }
 
+    function moveLeft(state) {
+        var rows = parseRows(state);
+        for (var i = 0; i < rows.length; i++) {
+            rows[i] = mergeLine(rows[i]);
+        }
+        return setRowsLeft(rows);
+    }
+
+    function parseRows(grid) {
+        var rows = [];
+        for (var row = 0; row < Math.sqrt(grid.length); row++) {
+            var rowItems = [];
+            for (var column = 0; column < Math.sqrt(grid.length); column++) {
+                var index = (row * Math.sqrt(grid.length)) + column;
+                rowItems.push(grid[index]);
+            }
+            rows.push(rowItems.reverse());
+        }
+        return rows;
+    }
+
+    function setRowsLeft(rows) {
+        var grid = [];
+        for (var row = 0; row < rows.length; row++) {
+            var rowItems = rows[row].reverse();
+            for (var column = 0; column < rowItems.length; column++) {
+                var gridIndex = (row * rows.length) + column;
+                grid[gridIndex] = rowItems[column];
+            }
+        }
+        return grid;
+    }
+
     function parseColumns(grid) {
         var columns = [];
         for (var column = 0; column < Math.sqrt(grid.length); column++) {
@@ -156,6 +189,7 @@ Game.Control = (function() {
     return {
         moveUp: moveUp,
         moveDown: moveDown,
+        moveLeft: moveLeft,
         mergeLine: mergeLine
     };
 }());
