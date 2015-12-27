@@ -8,15 +8,16 @@ var Game = (function() {
     };
 
     var state = [
-        0, 0, 0,
-        0, 0, 0,
-        0, 0, 0
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0
     ];
 
     function createTiles() {
         $("body").append("<div id='grid'></div>");
         var game = $("#grid");
-        for (var i = 0; i < 9; i++) {
+        for (var i = 0; i < 16; i++) {
             game.append("<div class='grid-cell'></div>");
         }
     }

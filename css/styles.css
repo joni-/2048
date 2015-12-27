@@ -1,11 +1,11 @@
 #grid {
-    width: 144px;
+    width: 250px;
 }
 
 .grid-cell {
     margin: 5px;
-    width: 33px;
-    height: 33px;
+    width: 45px;
+    height: 45px;
     float: left;
     background-color: #B4D8CF;
     border: 1px;
