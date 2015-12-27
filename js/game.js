@@ -43,20 +43,43 @@ var Game = (function() {
         return Math.floor(Math.random() * max);
     }
 
+    function fillRandomCell() {
+        if (!boardFull()) {
+            var r = getRandomNumber(state.length);
+            while (state[r] !== 0) {
+                r = getRandomNumber(state.length);
+            }
+            state[r] = getRandomNumber(2) == 1 ? 2 : 4;
+        }
+    }
+
+    function boardFull() {
+        for (var i = 0; i < state.length; i++) {
+            if (state[i] === 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     function registerKeyListeners() {
         $("body").on('keyup', function(e) {
             var key = e.keyCode;
             if (key === Keys.UP) {
                 state = Game.Control.moveUp(state);
+                fillRandomCell();
                 redraw();
             } else if (key === Keys.DOWN) {
                 state = Game.Control.moveDown(state);
+                fillRandomCell();
                 redraw();
             } else if (key === Keys.LEFT) {
                 state = Game.Control.moveLeft(state);
+                fillRandomCell();
                 redraw();
             } else if (key === Keys.RIGHT) {
                 state = Game.Control.moveRight(state);
+                fillRandomCell();
                 redraw();
             }
         });
