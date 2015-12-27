@@ -62,25 +62,41 @@ var Game = (function() {
         return true;
     }
 
+    function statesDiffer(oldState, newState) {
+        return JSON.stringify(oldState) !== JSON.stringify(newState); 
+    }
+
     function registerKeyListeners() {
         $("body").on('keyup', function(e) {
             var key = e.keyCode;
             if (key === Keys.UP) {
-                state = Game.Control.moveUp(state);
-                fillRandomCell();
-                redraw();
+                newState = Game.Control.moveUp(state);
+                if (statesDiffer(newState, state)) {
+                    state = newState;
+                    fillRandomCell();
+                    redraw();
+                }
             } else if (key === Keys.DOWN) {
-                state = Game.Control.moveDown(state);
-                fillRandomCell();
-                redraw();
+                newState = Game.Control.moveDown(state);
+                if (statesDiffer(newState, state)) {
+                    state = newState;
+                    fillRandomCell();
+                    redraw();
+                }
             } else if (key === Keys.LEFT) {
-                state = Game.Control.moveLeft(state);
-                fillRandomCell();
-                redraw();
+                newState = Game.Control.moveLeft(state);
+                if (statesDiffer(newState, state)) {
+                    state = newState;
+                    fillRandomCell();
+                    redraw();
+                }
             } else if (key === Keys.RIGHT) {
-                state = Game.Control.moveRight(state);
-                fillRandomCell();
-                redraw();
+                newState = Game.Control.moveRight(state);
+                if (statesDiffer(newState, state)) {
+                    state = newState;
+                    fillRandomCell();
+                    redraw();
+                }
             }
         });
     }
