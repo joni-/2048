@@ -44,6 +44,52 @@ describe("Simple merges", function() {
             ]);
         });
     });
+
+    describe("Moving down", function() {
+        it("should combine cells correctly", function() {
+            expect(Game.Control.moveDown([
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0
+            ])).toEqual([
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0
+            ]);
+
+            expect(Game.Control.moveDown([
+                1, 1, 1,
+                1, 1, 1,
+                1, 1, 1
+            ])).toEqual([
+                0, 0, 0,
+                1, 1, 1,
+                2, 2, 2
+            ]);
+
+            expect(Game.Control.moveDown([
+                1, 0, 1,
+                2, 1, 1,
+                4, 0, 1
+            ])).toEqual([
+                1, 0, 0,
+                2, 0, 1,
+                4, 1, 2
+            ]);
+
+            expect(Game.Control.moveDown([
+                1, 0, 0, 2,
+                1, 1, 0, 1,
+                1, 0, 0, 3,
+                1, 1, 1, 4
+            ])).toEqual([
+                0, 0, 0, 2,
+                0, 0, 0, 1,
+                2, 0, 0, 3,
+                2, 2, 1, 4
+            ]);
+        });
+    });
 });
 
 
