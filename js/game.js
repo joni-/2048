@@ -71,6 +71,8 @@ var Game = (function() {
 
 Game.Control = (function() {
 
+    var EMPTY_CELL = 0;
+
     function moveUp(state) {
         var newState = state.slice();
         var gridSize = Math.sqrt(newState.length);
@@ -89,7 +91,35 @@ Game.Control = (function() {
         return newState;
     }
 
+    function mergeLine(state) {
+        var newState = state.slice();
+        for (var current = newState.length - 2; current >= 0; current--) {
+            var last = current + 1;
+            if (newState[current] !== EMPTY_CELL && newState[current] === newState[last]) {
+                // Merge the current two cells
+                newState[last] = newState[last] + newState[current];
+                newState[current] = EMPTY_CELL;
+            } else if (newState[current] !== EMPTY_CELL && newState[last] === EMPTY_CELL) {
+                // Find the first cell that is not empty
+                while (newState[last] === EMPTY_CELL) {
+                    last++;
+                }
+                // Merge if the current cell is same as first non-empty cell,
+                // otherwise move the current cell in the first empty cell.
+                if (newState[current] !== EMPTY_CELL && newState[last] === newState[current]) {
+                    newState[last] = newState[last] + newState[current];
+                    newState[current] = EMPTY_CELL;
+                } else {
+                    newState[last-1] = newState[current];
+                    newState[current] = EMPTY_CELL;
+                }
+            }
+        }
+        return newState;
+    }
+
     return {
-        moveUp: moveUp
+        moveUp: moveUp,
+        mergeLine: mergeLine
     };
 }());
