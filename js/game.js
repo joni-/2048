@@ -67,37 +67,26 @@ var Game = (function() {
         return JSON.stringify(oldState) !== JSON.stringify(newState); 
     }
 
+    function move(moveFunction) {
+        newState = moveFunction(state);
+        if (statesDiffer(newState, state)) {
+            state = newState;
+            fillRandomCell();
+            redraw();
+        }
+    }
+
     function registerKeyListeners() {
         $("body").on('keyup', function(e) {
             var key = e.keyCode;
             if (key === Keys.UP) {
-                newState = Game.Control.moveUp(state);
-                if (statesDiffer(newState, state)) {
-                    state = newState;
-                    fillRandomCell();
-                    redraw();
-                }
+                move(Game.Control.moveUp);
             } else if (key === Keys.DOWN) {
-                newState = Game.Control.moveDown(state);
-                if (statesDiffer(newState, state)) {
-                    state = newState;
-                    fillRandomCell();
-                    redraw();
-                }
+                move(Game.Control.moveDown);
             } else if (key === Keys.LEFT) {
-                newState = Game.Control.moveLeft(state);
-                if (statesDiffer(newState, state)) {
-                    state = newState;
-                    fillRandomCell();
-                    redraw();
-                }
+                move(Game.Control.moveLeft);
             } else if (key === Keys.RIGHT) {
-                newState = Game.Control.moveRight(state);
-                if (statesDiffer(newState, state)) {
-                    state = newState;
-                    fillRandomCell();
-                    redraw();
-                }
+                move(Game.Control.moveRight);
             }
         });
     }
