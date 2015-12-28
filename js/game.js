@@ -7,17 +7,18 @@ var Game = (function() {
         DOWN: 40
     };
 
-    var state = [
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0
-    ];
+    var state = [];
+
+    function initializeState(gridSize) {
+        for (var i = 0; i < gridSize; i++) {
+            state[i] = new Game.Common.Cell();
+        }
+    }
 
     function createTiles() {
         $("body").append("<div id='grid'></div>");
         var game = $("#grid");
-        for (var i = 0; i < 16; i++) {
+        for (var i = 0; i < state.length; i++) {
             game.append("<div class='grid-cell'></div>");
         }
     }
@@ -25,7 +26,7 @@ var Game = (function() {
     function redraw() {
         var cells = $(".grid-cell");
         for (var i = 0; i < state.length; i++) {
-            cells[i].textContent = state[i];
+            cells[i].textContent = state[i].value;
         }
     }
     
@@ -35,8 +36,8 @@ var Game = (function() {
         while (r1 == r2) {
             r2 = getRandomNumber(state.length);
         }
-        state[r1] = getRandomNumber(2) == 1 ? 2 : 4;
-        state[r2] = getRandomNumber(2) == 1 ? 2 : 4;
+        state[r1].value = getRandomNumber(2) == 1 ? 2 : 4;
+        state[r2].value = getRandomNumber(2) == 1 ? 2 : 4;
     }
 
     // Return random integer between 0 - max (exlusive).
@@ -47,24 +48,24 @@ var Game = (function() {
     function fillRandomCell() {
         if (!boardFull()) {
             var r = getRandomNumber(state.length);
-            while (state[r] !== 0) {
+            while (state[r].value !== 0) {
                 r = getRandomNumber(state.length);
             }
-            state[r] = getRandomNumber(2) == 1 ? 2 : 4;
+            state[r].value = getRandomNumber(2) == 1 ? 2 : 4;
         }
     }
 
     function boardFull() {
         for (var i = 0; i < state.length; i++) {
-            if (state[i] === 0) {
+            if (state[i].value === 0) {
                 return false;
             }
         }
         return true;
     }
 
-    function statesDiffer(oldState, newState) {
-        return JSON.stringify(oldState) !== JSON.stringify(newState); 
+    function statesDiffer(newState, oldState) {
+        return JSON.stringify(newState) !== JSON.stringify(oldState); 
     }
 
     function move(moveFunction) {
@@ -93,11 +94,23 @@ var Game = (function() {
 
     return {
         initialize: function() {
+            initializeState(16);
             createTiles();
             randomStart();
             redraw();
             registerKeyListeners();
         }
+    };
+}());
+
+Game.Common = (function() {
+    
+    function Cell(value) {
+        this.value = value || 0;
+    }
+
+    return {
+        Cell: Cell
     };
 }());
 
@@ -213,26 +226,33 @@ Game.Control = (function() {
     }
 
     function mergeLine(state) {
-        var newState = state.slice();
+        var newState = _.cloneDeep(state);
         for (var current = newState.length - 2; current >= 0; current--) {
             var last = current + 1;
-            if (newState[current] !== EMPTY_CELL && newState[current] === newState[last]) {
+            if (newState[current].value !== EMPTY_CELL && newState[current].value === newState[last].value) {
                 // Merge the current two cells
-                newState[last] = newState[last] + newState[current];
-                newState[current] = EMPTY_CELL;
-            } else if (newState[current] !== EMPTY_CELL && newState[last] === EMPTY_CELL) {
+                newState[last].value = newState[last].value + newState[current].value;
+                newState[current].value = EMPTY_CELL;
+            } else if (newState[current].value !== EMPTY_CELL && newState[last].value === EMPTY_CELL) {
                 // Find the first cell that is not empty
-                while (newState[last] === EMPTY_CELL) {
+                while (last < newState.length && newState[last].value === EMPTY_CELL) {
                     last++;
                 }
-                // Merge if the current cell is same as first non-empty cell,
+
+                // First case handles the case if we need to move current cell
+                // to the first position.
+                // Second case merges if the current cell is same as first non-empty cell,
                 // otherwise move the current cell in the first empty cell.
-                if (newState[current] !== EMPTY_CELL && newState[last] === newState[current]) {
-                    newState[last] = newState[last] + newState[current];
-                    newState[current] = EMPTY_CELL;
+                if (last >= newState.length) {
+                    last = newState.length - 1;
+                    newState[last].value = newState[current].value;
+                    newState[current].value = EMPTY_CELL;
+                } else if (newState[current].value !== EMPTY_CELL && newState[last].value === newState[current].value) {
+                    newState[last].value = newState[last].value + newState[current].value;
+                    newState[current].value = EMPTY_CELL;
                 } else {
-                    newState[last-1] = newState[current];
-                    newState[current] = EMPTY_CELL;
+                    newState[last-1].value = newState[current].value;
+                    newState[current].value = EMPTY_CELL;
                 }
             }
         }
