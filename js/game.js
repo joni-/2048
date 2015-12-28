@@ -226,7 +226,9 @@ Game.Control = (function() {
     }
 
     function mergeLine(state) {
-        var newState = _.cloneDeep(state);
+        var newState = _.map(state, function(cell) {
+            return new Game.Common.Cell(cell.value);
+        });
         for (var current = newState.length - 2; current >= 0; current--) {
             var last = current + 1;
             if (newState[current].value !== EMPTY_CELL && newState[current].value === newState[last].value) {
