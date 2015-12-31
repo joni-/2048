@@ -31,13 +31,8 @@ var Game = (function() {
     }
     
     function randomStart() {
-        var r1 = getRandomNumber(state.length);
-        var r2 = r1;
-        while (r1 == r2) {
-            r2 = getRandomNumber(state.length);
-        }
-        state[r1].value = getRandomNumber(2) == 1 ? 2 : 4;
-        state[r2].value = getRandomNumber(2) == 1 ? 2 : 4;
+        fillRandomCell();
+        fillRandomCell();
     }
 
     // Return random integer between 0 - max (exlusive).
@@ -47,11 +42,8 @@ var Game = (function() {
 
     function fillRandomCell() {
         if (!boardFull()) {
-            var r = getRandomNumber(state.length);
-            while (state[r].value !== 0) {
-                r = getRandomNumber(state.length);
-            }
-            state[r].value = getRandomNumber(2) == 1 ? 2 : 4;
+            var cell = getRandomEmptyCellIndex();
+            state[cell].value = getRandomNumber(2) == 1 ? 2 : 4;
         }
     }
 
@@ -62,6 +54,16 @@ var Game = (function() {
             }
         }
         return true;
+    }
+
+    function getRandomEmptyCellIndex() {
+        var emptyCellIndexes = [];
+        for (var i = 0; i < state.length; i++) {
+            if (state[i].value === 0) {
+                emptyCellIndexes.push(i);
+            }
+        }
+        return _.sample(emptyCellIndexes);
     }
 
     function statesDiffer(newState, oldState) {
