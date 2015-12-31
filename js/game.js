@@ -49,7 +49,7 @@ var Game = (function() {
 
     function boardFull() {
         for (var i = 0; i < state.length; i++) {
-            if (state[i].value === 0) {
+            if (state[i].isEmpty()) {
                 return false;
             }
         }
@@ -59,7 +59,7 @@ var Game = (function() {
     function getRandomEmptyCellIndex() {
         var emptyCellIndexes = [];
         for (var i = 0; i < state.length; i++) {
-            if (state[i].value === 0) {
+            if (state[i].isEmpty()) {
                 emptyCellIndexes.push(i);
             }
         }
@@ -109,6 +109,10 @@ Game.Common = (function() {
     
     function Cell(value) {
         this.value = value || 0;
+
+        this.isEmpty = function() {
+            return this.value === 0;
+        };
     }
 
     return {
@@ -233,13 +237,13 @@ Game.Control = (function() {
         });
         for (var current = newState.length - 2; current >= 0; current--) {
             var last = current + 1;
-            if (newState[current].value !== EMPTY_CELL && newState[current].value === newState[last].value) {
+            if (!newState[current].isEmpty() && newState[current].value === newState[last].value) {
                 // Merge the current two cells
                 newState[last].value = newState[last].value + newState[current].value;
                 newState[current].value = EMPTY_CELL;
-            } else if (newState[current].value !== EMPTY_CELL && newState[last].value === EMPTY_CELL) {
+            } else if (!newState[current].isEmpty() && newState[last].isEmpty()) {
                 // Find the first cell that is not empty
-                while (last < newState.length && newState[last].value === EMPTY_CELL) {
+                while (last < newState.length && newState[last].isEmpty()) {
                     last++;
                 }
 
@@ -251,7 +255,7 @@ Game.Control = (function() {
                     last = newState.length - 1;
                     newState[last].value = newState[current].value;
                     newState[current].value = EMPTY_CELL;
-                } else if (newState[current].value !== EMPTY_CELL && newState[last].value === newState[current].value) {
+                } else if (!newState[current].isEmpty() && newState[last].value === newState[current].value) {
                     newState[last].value = newState[last].value + newState[current].value;
                     newState[current].value = EMPTY_CELL;
                 } else {
