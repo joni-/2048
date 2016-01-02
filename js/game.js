@@ -51,7 +51,7 @@ var Game = (function() {
     function redraw() {
         var cells = $(".grid-cell");
         for (var i = 0; i < state.length; i++) {
-            cells[i].textContent = state[i].value;
+            cells[i].textContent = state[i].getContent();
         }
     }
     
@@ -157,6 +157,13 @@ Game.Common = (function() {
 
         this.copyValue = function(anotherCell) {
             this.value = anotherCell.value;
+        };
+
+        this.getContent = function() {
+            if (this.isEmpty()) {
+                return "";
+            }
+            return this.value;
         };
     }
 
