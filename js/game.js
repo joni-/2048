@@ -129,6 +129,10 @@ Game.Common = (function() {
         this.clone = function() {
             return new Cell(this.value);
         };
+
+        this.copyValue = function(anotherCell) {
+            this.value = anotherCell.value;
+        };
     }
 
     return {
@@ -267,13 +271,13 @@ Game.Control = (function() {
                 // otherwise move the current cell in the first empty cell.
                 if (last >= newState.length) {
                     last = newState.length - 1;
-                    newState[last].value = newState[current].value;
+                    newState[last].copyValue(newState[current]);
                     newState[current].setEmpty();
                 } else if (!newState[current].isEmpty() && newState[last].equals(newState[current])) {
                     newState[last].add(newState[current]);
                     newState[current].setEmpty();
                 } else {
-                    newState[last-1].value = newState[current].value;
+                    newState[last-1].copyValue(newState[current]);
                     newState[current].setEmpty();
                 }
             }
