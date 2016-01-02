@@ -117,6 +117,10 @@ Game.Common = (function() {
         this.setEmpty = function() {
             this.value = 0;
         };
+
+        this.add = function(anotherCell) {
+            this.value += anotherCell.value;
+        };
     }
 
     return {
@@ -241,7 +245,7 @@ Game.Control = (function() {
             var last = current + 1;
             if (!newState[current].isEmpty() && newState[current].value === newState[last].value) {
                 // Merge the current two cells
-                newState[last].value = newState[last].value + newState[current].value;
+                newState[last].add(newState[current]);
                 newState[current].setEmpty();
             } else if (!newState[current].isEmpty() && newState[last].isEmpty()) {
                 // Find the first cell that is not empty
@@ -258,7 +262,7 @@ Game.Control = (function() {
                     newState[last].value = newState[current].value;
                     newState[current].setEmpty();
                 } else if (!newState[current].isEmpty() && newState[last].value === newState[current].value) {
-                    newState[last].value = newState[last].value + newState[current].value;
+                    newState[last].add(newState[current]);
                     newState[current].setEmpty();
                 } else {
                     newState[last-1].value = newState[current].value;
