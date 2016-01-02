@@ -121,6 +121,10 @@ Game.Common = (function() {
         this.add = function(anotherCell) {
             this.value += anotherCell.value;
         };
+
+        this.equals = function(anotherCell) {
+            return this.value === anotherCell.value;
+        };
     }
 
     return {
@@ -243,7 +247,7 @@ Game.Control = (function() {
         });
         for (var current = newState.length - 2; current >= 0; current--) {
             var last = current + 1;
-            if (!newState[current].isEmpty() && newState[current].value === newState[last].value) {
+            if (!newState[current].isEmpty() && newState[current].equals(newState[last])) {
                 // Merge the current two cells
                 newState[last].add(newState[current]);
                 newState[current].setEmpty();
@@ -261,7 +265,7 @@ Game.Control = (function() {
                     last = newState.length - 1;
                     newState[last].value = newState[current].value;
                     newState[current].setEmpty();
-                } else if (!newState[current].isEmpty() && newState[last].value === newState[current].value) {
+                } else if (!newState[current].isEmpty() && newState[last].equals(newState[current])) {
                     newState[last].add(newState[current]);
                     newState[current].setEmpty();
                 } else {
