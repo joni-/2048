@@ -113,6 +113,10 @@ Game.Common = (function() {
         this.isEmpty = function() {
             return this.value === 0;
         };
+
+        this.setEmpty = function() {
+            this.value = 0;
+        };
     }
 
     return {
@@ -122,8 +126,6 @@ Game.Common = (function() {
 
 
 Game.Control = (function() {
-
-    var EMPTY_CELL = 0;
 
     function moveUp(state) {
         var columns = parseColumns(state);
@@ -240,7 +242,7 @@ Game.Control = (function() {
             if (!newState[current].isEmpty() && newState[current].value === newState[last].value) {
                 // Merge the current two cells
                 newState[last].value = newState[last].value + newState[current].value;
-                newState[current].value = EMPTY_CELL;
+                newState[current].setEmpty();
             } else if (!newState[current].isEmpty() && newState[last].isEmpty()) {
                 // Find the first cell that is not empty
                 while (last < newState.length && newState[last].isEmpty()) {
@@ -254,13 +256,13 @@ Game.Control = (function() {
                 if (last >= newState.length) {
                     last = newState.length - 1;
                     newState[last].value = newState[current].value;
-                    newState[current].value = EMPTY_CELL;
+                    newState[current].setEmpty();
                 } else if (!newState[current].isEmpty() && newState[last].value === newState[current].value) {
                     newState[last].value = newState[last].value + newState[current].value;
-                    newState[current].value = EMPTY_CELL;
+                    newState[current].setEmpty();
                 } else {
                     newState[last-1].value = newState[current].value;
-                    newState[current].value = EMPTY_CELL;
+                    newState[current].setEmpty();
                 }
             }
         }
