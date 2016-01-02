@@ -12,7 +12,7 @@ describe("Game control", function() {
                             }
 
                             for (var i = 0; i < actual.length; i++) {
-                                if (actual[i].value !== expected[i].value) {
+                                if (!actual[i].equals(expected[i])) {
                                     return false;
                                 }
                             }
