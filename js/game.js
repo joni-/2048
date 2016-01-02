@@ -125,6 +125,10 @@ Game.Common = (function() {
         this.equals = function(anotherCell) {
             return this.value === anotherCell.value;
         };
+
+        this.clone = function() {
+            return new Cell(this.value);
+        };
     }
 
     return {
@@ -243,7 +247,7 @@ Game.Control = (function() {
 
     function mergeLine(state) {
         var newState = _.map(state, function(cell) {
-            return new Game.Common.Cell(cell.value);
+            return cell.clone();
         });
         for (var current = newState.length - 2; current >= 0; current--) {
             var last = current + 1;
