@@ -21,6 +21,31 @@ var Game = (function() {
         for (var i = 0; i < state.length; i++) {
             game.append("<div class='grid-cell'></div>");
         }
+        setCss();
+    }
+
+    function setCss() {
+        var screenWidth = $(window).width();
+        var screenHeight = $(window).height();
+        var gridSize = Math.min(screenWidth, screenHeight);
+
+        var borderSize = 1;
+        var marginSize = 2;
+
+        var cellSize = gridSize / Math.sqrt(state.length) - borderSize * 2 - marginSize * 2;
+
+        var grid = $("#grid");
+        grid.css("width", gridSize);
+
+        var cell = $(".grid-cell");
+        cell.css("width", cellSize);
+        cell.css("height", cellSize);
+        cell.css("margin", marginSize);
+        cell.css("background-color", "#B4D8CF");
+        cell.css("float", "left");
+        cell.css("border", borderSize);
+        cell.css("border-style", "solid");
+        cell.css("text-align", "center");
     }
 
     function redraw() {
