@@ -27,7 +27,7 @@ var Game = (function() {
     function setCss() {
         var screenWidth = $(window).width();
         var screenHeight = $(window).height();
-        var gridSize = Math.min(screenWidth, screenHeight);
+        var gridSize = Math.min(screenWidth, screenHeight) - 10;
 
         var borderSize = 1;
         var marginSize = 2;
