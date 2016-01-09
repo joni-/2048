@@ -104,7 +104,7 @@ var Game = (function() {
         }
     }
 
-    function registerKeyListeners() {
+    function registerMoveEvents() {
         $("body").on('keyup', function(e) {
             var key = e.keyCode;
             if (key === Keys.UP) {
@@ -117,6 +117,25 @@ var Game = (function() {
                 move(Game.Control.moveRight);
             }
         });
+
+        var hammer = new Hammer(document.body);
+        hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+
+        hammer.on("swipeleft", function() {
+            move(Game.Control.moveLeft);
+        });
+        
+        hammer.on("swiperight", function() {
+            move(Game.Control.moveRight);
+        });
+        
+        hammer.on("swipeup", function() {
+            move(Game.Control.moveUp);
+        });
+        
+        hammer.on("swipedown", function() {
+            move(Game.Control.moveDown);
+        });
     }
 
     return {
@@ -125,7 +144,7 @@ var Game = (function() {
             createTiles();
             randomStart();
             redraw();
-            registerKeyListeners();
+            registerMoveEvents();
         }
     };
 }());
