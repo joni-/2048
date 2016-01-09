@@ -42,7 +42,6 @@ var Game = (function() {
         cell.css("width", cellSize);
         cell.css("height", cellSize);
         cell.css("margin", marginSize);
-        cell.css("background-color", "#B4D8CF");
         cell.css("float", "left");
         cell.css("border", borderSize);
         cell.css("border-style", "solid");
@@ -53,7 +52,7 @@ var Game = (function() {
     function redraw() {
         var cells = $(".grid-cell");
         for (var i = 0; i < state.length; i++) {
-            cells[i].textContent = state[i].getContent();
+            cells[i].innerHTML = state[i].getContent();
         }
     }
     
@@ -154,6 +153,21 @@ var Game = (function() {
 Game.Common = (function() {
     
     function Cell(value) {
+
+        this.valueContentMap = {
+            2: "arska.png",
+            4: "bauer.png",
+            8: "bruce.png",
+            16: "chuck.png",
+            32: "diesel.png",
+            64: "lundgren.png",
+            128: "rock.png",
+            256: "samuel.png",
+            512: "stallone.png",
+            1024: "statham.png",
+            2048: "vandamme.png"
+        };
+
         this.value = value || 0;
 
         this.isEmpty = function() {
@@ -184,7 +198,7 @@ Game.Common = (function() {
             if (this.isEmpty()) {
                 return "";
             }
-            return this.value;
+            return "<img width='100%' height='100%' src='images/" + this.valueContentMap[this.value] + "'>";
         };
     }
 
