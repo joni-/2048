@@ -69,7 +69,8 @@ var Game = (function() {
     function fillRandomCell() {
         if (!boardFull()) {
             var cell = getRandomEmptyCellIndex();
-            state[cell].value = getRandomNumber(2) == 1 ? 2 : 4;
+            // 90% of time create tile with 2, 10% of time with 4 
+            state[cell].value = _.sample([2, 2, 2, 2, 2, 2, 2, 2, 2, 4]);
         }
     }
 
