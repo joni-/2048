@@ -38,6 +38,7 @@ var Game = (function() {
         grid.css("width", gridSize);
 
         var cell = $(".grid-cell");
+        cell.css("font-size", "3em");
         cell.css("width", cellSize);
         cell.css("height", cellSize);
         cell.css("margin", marginSize);
@@ -46,6 +47,7 @@ var Game = (function() {
         cell.css("border", borderSize);
         cell.css("border-style", "solid");
         cell.css("text-align", "center");
+
     }
 
     function redraw() {
